@@ -23,14 +23,13 @@ public class MDS {
         set = new TreeSet<>();
     }
 
-    /* Public methods of MDS. Do not change their signatures.
-       __________________________________________________________________
-       a. Insert(id,price,list): insert a new item whose description is given
-       in the list.  If an entry with the same id already exists, then its
-       description and price are replaced by the new values, unless list
-       is null or empty, in which case, just the price is updated.
-       Returns 1 if the item is new, and 0 otherwise.
-    */
+    /**
+     * Insert a new item whose description is given in the list.
+     * @param id: id of the item,
+     * @param price: price of the item
+     * @param list: description of the item
+     * @return Returns 1 if the item is new, and 0 otherwise.
+     * */
     public int insert(long id, Money price, List<Long> list) {
         if (tree.containsKey(id)){
             if(!list.isEmpty()){
@@ -38,10 +37,10 @@ public class MDS {
                 insert(id,price,list);
             }
             else {
-                delete(id);
                 List value = new ArrayList();
-                value.add(price);
-                value.add(new ArrayList());
+                value = tree.get(id);
+                value.remove(0);
+                value.add(0,price);
                 tree.put(id,value);
             }
             return 0;
@@ -89,11 +88,11 @@ public class MDS {
         return new Money();
     }
 
-    /*
-       c. Delete(id): delete item from storage.  Returns the sum of the
-       long ints that are in the description of the item deleted,
-       or 0, if such an id did not exist.
-    */
+    /**
+     * Delete item from storage.
+     * @param id: id of the item to be deleted
+     * @return Returns the sum of the long ints  that are in the description of the item deleted
+     * */
     public long delete(long id) {
         if(!tree.containsKey(id))
             return 0;
