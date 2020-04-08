@@ -33,6 +33,17 @@ public class MDS {
     */
     public int insert(long id, Money price, List<Long> list) {
         if (tree.containsKey(id)){
+            if(!list.isEmpty()){
+                delete(id);
+                insert(id,price,list);
+            }
+            else {
+                delete(id);
+                List value = new ArrayList();
+                value.add(price);
+                value.add(new ArrayList());
+                tree.put(id,value);
+            }
             return 0;
         }
         else{
@@ -45,7 +56,8 @@ public class MDS {
 
             // add keys to the table and initialize empty set for them
             for(Long l: list){
-                table.put(l,new TreeSet<>());
+                if(!table.containsKey(l))
+                    table.put(l,new TreeSet<>());
             }
 
             //add sets of IDs in
@@ -72,6 +84,8 @@ public class MDS {
 
     // b. Find(id): return price of item with given id (or 0, if not found).
     public Money find(long id) {
+        if(tree.containsKey(id))
+            return (Money) tree.get(id).get(0);
         return new Money();
     }
 
@@ -173,6 +187,7 @@ public class MDS {
                 System.out.print(v.toString() + " ");
             System.out.println();
         }
+        System.out.println();
     }
 
     public void printTree(){

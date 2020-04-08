@@ -19,7 +19,7 @@ public class LP4Driver {
         } else {
             in = new Scanner(System.in);
         }*/
-		File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\403.txt");
+		File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\402.txt");
 		in = new Scanner(file);
 		boolean VERBOSE = false;
 	if (args.length > 1) { VERBOSE = Boolean.parseBoolean(args[1]); }
@@ -56,15 +56,18 @@ public class LP4Driver {
 				else { name.add(val); }
 			}
 			result = mds.insert(id, price, name);
+			System.out.println("Insert: " + result);
 
 		break;
 	    case "Find":
 		id = in.nextLong();
 		result = mds.find(id).dollars();
+			System.out.println("FInd: " + result);
 		break;
 	    case "Delete":
 		id = in.nextLong();
 		result = mds.delete(id);
+			System.out.println("Delete: " + result);
 		break;
 	    case "FindMinPrice":
 		result = mds.findMinPrice(in.nextLong()).dollars();
