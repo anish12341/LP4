@@ -33,7 +33,7 @@ public class MDS {
     */
     public int insert(long id, Money price, List<Long> list) {
         if (tree.containsKey(id)){
-            return 1;
+            return 0;
         }
         else{
             List value = new ArrayList();
@@ -67,7 +67,7 @@ public class MDS {
             }
         }
 
-        return 0;
+        return 1;
     }
 
     // b. Find(id): return price of item with given id (or 0, if not found).
@@ -82,18 +82,20 @@ public class MDS {
     */
     public long delete(long id) {
         if(!tree.containsKey(id))
-            return 1;
+            return 0;
 
         ArrayList descList= new ArrayList();
         descList.addAll((Collection) tree.get(id).get(1));
         tree.remove(id);
 
+        int sum = 0;
         for(Object l : descList){
             table.get(l).remove(id);
+            sum += Integer.parseInt(l.toString());
             if(table.get(l).isEmpty())
                 table.remove(l);
         }
-        return 0;
+        return sum;
     }
 
     /*

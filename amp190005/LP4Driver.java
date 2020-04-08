@@ -13,14 +13,14 @@ import java.util.Scanner;
 public class LP4Driver {
     public static void main(String[] args) throws Exception {
         Scanner in;
-        if (args.length > 0 && !args[0].equals("-")) {
+        /*if (args.length > 0 && !args[0].equals("-")) {
             File file = new File(args[0]);
             in = new Scanner(file);
         } else {
             in = new Scanner(System.in);
-        }
-		/*File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4\\src\\LP4\\TestCases\\403.txt");
-		in = new Scanner(file);*/
+        }*/
+		File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\403.txt");
+		in = new Scanner(file);
 		boolean VERBOSE = false;
 	if (args.length > 1) { VERBOSE = Boolean.parseBoolean(args[1]); }
 
