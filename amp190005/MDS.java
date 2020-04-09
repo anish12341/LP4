@@ -8,12 +8,7 @@
  * @version 1.0
  */
 
-
-
-// Change to your net id
 package LP4.amp190005;
-
-// If you want to create additional classes, place them in this file as subclasses of MDS
 
 import java.util.*;
 
@@ -223,7 +218,6 @@ public class MDS {
         return 0;
     }
 
-    // Do not modify the Money class in a way that breaks LP3Driver.java
     public static class Money implements Comparable<Money> {
         long d;  int c;
         public Money() { d = 0; c = 0; }
@@ -264,16 +258,11 @@ public class MDS {
 
     public void printTree(){
         Set<Long> keys = tree.keySet();
-
         for(Long k: keys){
             System.out.print(k + ": ");
             System.out.print(tree.get(k).price.toString() + " ");
             System.out.print(tree.get(k).desc.toString() + " ");
             System.out.println();
         }
-        /*for(Object v: value){
-            System.out.print(v.toString() + " ");
-            System.out.println();
-        }*/
     }
 }
