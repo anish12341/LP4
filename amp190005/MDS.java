@@ -210,7 +210,18 @@ public class MDS {
       deleted from the description of id.  Return 0 if there is no such id.
     */
     public long removeNames(long id, java.util.List<Long> list) {
-	return 0;
+	   long result =0;
+       if (tree.containsKey(id)){
+        List value = new ArrayList();
+        value=tree.get(id);
+        for( long i: list){
+            if (value.contains(i)){
+                result += i;
+                this.tree.get(id).remove(i);
+                this.table.get(i).remove(id);
+            }
+        }
+       }
     }
     
     // Do not modify the Money class in a way that breaks LP3Driver.java
