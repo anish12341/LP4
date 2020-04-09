@@ -1,6 +1,14 @@
-/** Starter code for MDS
- *  @author rbk
+/**
+ * Implementation of Multi-dimensional Search (LP4).
+ *
+ * @author Anish Patel amp190005
+ * @author Henil Doshi hxd180025
+ * @author Neel Gotecha nxg180023
+ * @author Ishan Shah ixs180019
+ * @version 1.0
  */
+
+
 
 // Change to your net id
 package LP4.amp190005;
@@ -10,22 +18,33 @@ package LP4.amp190005;
 import java.util.*;
 
 public class MDS {
-    // Add fields of MDS here
 
+    /**
+     * Fields of MDS
+     */
     TreeMap<Long, MDSEntry> tree;
     HashMap<Long, TreeSet<Long>> table;
     TreeSet<Long> set;
 
+    /**
+     * Class MDSEntry
+     * */
     static class MDSEntry<T> {
         Money price;
         List<Long> desc;
+
+        /**
+         * Constructor of Entry class
+         * */
         public MDSEntry(Money price, List<Long> desc) {
             this.price = price;
             this.desc = desc;
         }
     }
 
-    // Constructors
+    /**
+     * Constructor of MDS class
+     * */
     public MDS() {
         tree = new TreeMap<>();
         table = new HashMap<>();
@@ -33,12 +52,16 @@ public class MDS {
     }
 
     /**
-     * Insert a new item whose description is given in the list.
-     * @param id: id of the item,
+     * a. Insert(id,price,list): insert a new item whose description is given
+     * in the list.  If an entry with the same id already exists, then its
+     * description and price are replaced by the new values, unless list
+     * is null or empty, in which case, just the price is updated.
+     * Returns 1 if the item is new, and 0 otherwise.
+     * @param id: id of the item
      * @param price: price of the item
      * @param list: description of the item
-     * @return Returns 1 if the item is new, and 0 otherwise.
-     * */
+     * @return int Returns 1 if the item is new, and 0 otherwise.
+     **/
     public int insert(long id, Money price, List<Long> list) {
         if (tree.containsKey(id)){
             if(!list.isEmpty()){
@@ -97,10 +120,12 @@ public class MDS {
     }
 
     /**
-     * Delete item from storage.
+     * c. Delete(id): delete item from storage. Returns the sum of the
+     * long ints that are in the description of the item deleted,
+     * or 0, if such an id did not exist.
      * @param id: id of the item to be deleted
-     * @return Returns the sum of the long ints  that are in the description of the item deleted
-     * */
+     * @return Returns the sum of the long ints that are in the description of the item deleted
+     **/
     public long delete(long id) {
         if(!tree.containsKey(id))
             return 0;
@@ -194,6 +219,7 @@ public class MDS {
       deleted from the description of id.  Return 0 if there is no such id.
     */
     public long removeNames(long id, List<Long> list) {
+
         return 0;
     }
 
@@ -212,6 +238,14 @@ public class MDS {
         public long dollars() { return d; }
         public int cents() { return c; }
         public int compareTo(Money other) { // Complete this, if needed
+            if (this.d > other.d)
+                return 1;
+            else if (this.d < other.d)
+                return -1;
+            else if (this.c > other.c)
+                return 1;
+            else if (this.c < other.c)
+                return -1;
             return 0;
         }
         public String toString() { return d + "." + c; }
