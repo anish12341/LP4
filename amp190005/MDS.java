@@ -213,12 +213,12 @@ public class MDS {
 	   long result =0;
        if (tree.containsKey(id)){
         List value = new ArrayList();
-        value=tree.get(id);
+        value=tree.get(id);                         // arrayname to be added after a .
         for( long i: list){
             if (value.contains(i)){
                 result += i;
-                this.tree.get(id).remove(i);
-                this.table.get(i).remove(id);
+                this.tree.get(id).remove(i);        // arrayname to be added after a .
+                this.table.get(i).remove(id);       // arrayname to be added after a .
             }
         }
        }
