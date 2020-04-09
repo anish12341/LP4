@@ -19,7 +19,7 @@ public class LP4Driver {
         } else {
             in = new Scanner(System.in);
         }*/
-		File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\403.txt");
+		File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\402.txt");
 		in = new Scanner(file);
 		boolean VERBOSE = false;
 	if (args.length > 1) { VERBOSE = Boolean.parseBoolean(args[1]); }
@@ -99,7 +99,6 @@ public class LP4Driver {
 				mds.printTable();
 	    }
 	    total += result;
-	    System.out.println("Total: " + total);
 	    if(VERBOSE) { System.out.println(lineno + "\t" + operation + "\t" + result + "\t" + total); }
 	}
 
