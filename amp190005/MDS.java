@@ -12,9 +12,18 @@ import java.util.*;
 public class MDS {
     // Add fields of MDS here
 
-    TreeMap<Long, List> tree;
+    TreeMap<Long, MDSEntry> tree;
     HashMap<Long, TreeSet<Long>> table;
     TreeSet<Long> set;
+
+    static class MDSEntry<T> {
+        Money price;
+        List<Long> desc;
+        public MDSEntry(Money price, List<Long> desc) {
+            this.price = price;
+            this.desc = desc;
+        }
+    }
 
     // Constructors
     public MDS() {
@@ -37,21 +46,16 @@ public class MDS {
                 insert(id,price,list);
             }
             else {
-                List value = new ArrayList();
-                value = tree.get(id);
-                value.remove(0);
-                value.add(0,price);
+                MDSEntry value = tree.get(id);
+                value.price = price;
                 tree.put(id,value);
             }
             return 0;
         }
         else{
-            List value = new ArrayList();
-            value.add(price);
             List ls  = new ArrayList();
             ls.addAll(list);
-            value.add(ls);
-            tree.put(id,value);
+            tree.put(id,new MDSEntry(price,ls));
 
             // add keys to the table and initialize empty set for them
             for(Long l: list){
@@ -81,10 +85,14 @@ public class MDS {
         return 1;
     }
 
-    // b. Find(id): return price of item with given id (or 0, if not found).
+    /**
+     * b. Find(id): return price of item with given id (or 0, if not found).
+     * @param id Item's id whose price we want to return
+     * @return Money price of given item id, if item not present then return 0
+     */
     public Money find(long id) {
         if(tree.containsKey(id))
-            return (Money) tree.get(id).get(0);
+            return (Money) tree.get(id).price;
         return new Money();
     }
 
@@ -98,7 +106,7 @@ public class MDS {
             return 0;
 
         ArrayList descList= new ArrayList();
-        descList.addAll((Collection) tree.get(id).get(1));
+        descList.addAll((Collection) tree.get(id).desc);
         tree.remove(id);
 
         int sum = 0;
@@ -111,24 +119,55 @@ public class MDS {
         return sum;
     }
 
-    /*
-       d. FindMinPrice(n): given a long int, find items whose description
-       contains that number (exact match with one of the long ints in the
-       item's description), and return lowest price of those items.
-       Return 0 if there is no such item.
-    */
+    /**
+     * d. FindMinPrice(n): given a long int, find items whose description
+     * contains that number (exact match with one of the long ints in the
+     * item's description), and return lowest price of those items.
+     * Return 0 if there is no such item.
+     * @param n item's description
+     * @return Money lowest price if there is such item, else return 0
+     */
     public Money findMinPrice(long n) {
-        return new Money();
+        if(!table.containsKey(n)) {
+            return new Money();
+        }
+        TreeSet<Long> minSet = table.get(n);
+        Money minPrice = new Money();
+        boolean first = false;
+        for(Long id: minSet) {
+            Money tempPrice = (Money) tree.get(id).price;
+            if (minPrice.compareTo(tempPrice) == 1 || !first) {
+                minPrice = tempPrice;
+                first = true;
+            }
+        }
+        return minPrice;
     }
 
-    /*
-       e. FindMaxPrice(n): given a long int, find items whose description
-       contains that number, and return highest price of those items.
-       Return 0 if there is no such item.
-    */
+    /**
+     * e. FindMaxPrice(n): given a long int, find items whose description
+     * contains that number, and return highest price of those items.
+     * Return 0 if there is no such item.
+     * @param n item's description
+     * @return Money Highest price if there is such item, else return 0
+     */
     public Money findMaxPrice(long n) {
-        return new Money();
+        if(!table.containsKey(n)) {
+            return new Money();
+        }
+        TreeSet<Long> maxSet = table.get(n);
+        Money maxPrice = new Money();
+        boolean first = false;
+        for(Long id: maxSet) {
+            Money tempPrice = (Money) tree.get(id).price;
+            if (maxPrice.compareTo(tempPrice) == -1 || !first) {
+                maxPrice = tempPrice;
+                first = true;
+            }
+        }
+        return maxPrice;
     }
+
 
     /*
        f. FindPriceRange(n,low,high): given a long int n, find the number
@@ -194,7 +233,8 @@ public class MDS {
 
         for(Long k: keys){
             System.out.print(k + ": ");
-            System.out.print(tree.get(k).toString() + " ");
+            System.out.print(tree.get(k).price.toString() + " ");
+            System.out.print(tree.get(k).desc.toString() + " ");
             System.out.println();
         }
         /*for(Object v: value){
