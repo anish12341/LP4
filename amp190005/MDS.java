@@ -8,68 +8,72 @@
  * @version 1.0
  */
 
-// Change to your net id
 package LP4.amp190005;
 
-// If you want to create additional classes, place them in this file as subclasses of MDS
-
 import java.util.*;
-import java.util.List;
 
 public class MDS {
-	/**
-	 * Fields of MDS
-	 */
-	TreeMap<Long, List> tree;
+
+    /**
+     * Fields of MDS
+     */
+    TreeMap<Long, MDSEntry> tree;
     HashMap<Long, TreeSet<Long>> table;
     TreeSet<Long> set;
 
     /**
-     * Constructor for MDS
-     */
+     * Class MDSEntry
+     * */
+    static class MDSEntry<T> {
+        Money price;
+        List<Long> desc;
+
+        /**
+         * Constructor of Entry class
+         * */
+        public MDSEntry(Money price, List<Long> desc) {
+            this.price = price;
+            this.desc = desc;
+        }
+    }
+
+    /**
+     * Constructor of MDS class
+     * */
     public MDS() {
         tree = new TreeMap<>();
         table = new HashMap<>();
         set = new TreeSet<>();
     }
 
-    /* Public methods of MDS. Do not change their signatures.
-       __________________________________________________________________
-     */
-    
     /**
      * a. Insert(id,price,list): insert a new item whose description is given
      * in the list.  If an entry with the same id already exists, then its
      * description and price are replaced by the new values, unless list
-     * is null or empty, in which case, just the price is updated. 
+     * is null or empty, in which case, just the price is updated.
      * Returns 1 if the item is new, and 0 otherwise.
      * @param id: id of the item
      * @param price: price of the item
      * @param list: description of the item
      * @return int Returns 1 if the item is new, and 0 otherwise.
      **/
-    public int insert(long id, Money price, List<Long> list)  {
-    	if (tree.containsKey(id)){
+    public int insert(long id, Money price, List<Long> list) {
+        if (tree.containsKey(id)){
             if(!list.isEmpty()){
                 delete(id);
                 insert(id,price,list);
             }
             else {
-                List value = new ArrayList();
-                value = tree.get(id);
-                value.remove(0);
-                value.add(0,price);
+                MDSEntry value = tree.get(id);
+                value.price = price;
                 tree.put(id,value);
             }
             return 0;
-    	}
+        }
         else{
-            List value = new ArrayList();
-            value.add(price);
             List ls  = new ArrayList();
             ls.addAll(list);
-            value.add(ls);
-            tree.put(id,value);
+            tree.put(id,new MDSEntry(price,ls));
 
             // add keys to the table and initialize empty set for them
             for(Long l: list){
@@ -105,10 +109,9 @@ public class MDS {
      * @return Money price of given item id, if item not present then return 0
      */
     public Money find(long id) {
-    	if (tree.containsKey(id)) {
-    		return (Money) tree.get(id).get(0);
-    	}
-    	return new Money();
+        if(tree.containsKey(id))
+            return (Money) tree.get(id).price;
+        return new Money();
     }
 
     /**
@@ -123,7 +126,7 @@ public class MDS {
             return 0;
 
         ArrayList descList= new ArrayList();
-        descList.addAll((Collection) tree.get(id).get(1));
+        descList.addAll((Collection) tree.get(id).desc);
         tree.remove(id);
 
         int sum = 0;
@@ -145,20 +148,20 @@ public class MDS {
      * @return Money lowest price if there is such item, else return 0
      */
     public Money findMinPrice(long n) {
-    	if(!table.containsKey(n)) {
-    		return new Money();
-    	}
-    	TreeSet<Long> minSet = table.get(n);
-    	Money minPrice = new Money();
-    	boolean first = false;
-    	for(Long id: minSet) {
-    		Money tempPrice = (Money) tree.get(id).get(0);
-    		if (minPrice.compareTo(tempPrice) == 1 || !first) {
-    			minPrice = tempPrice;
-    			first = true;
-    		}
-    	}
-    	return minPrice;
+        if(!table.containsKey(n)) {
+            return new Money();
+        }
+        TreeSet<Long> minSet = table.get(n);
+        Money minPrice = new Money();
+        boolean first = false;
+        for(Long id: minSet) {
+            Money tempPrice = (Money) tree.get(id).price;
+            if (minPrice.compareTo(tempPrice) == 1 || !first) {
+                minPrice = tempPrice;
+                first = true;
+            }
+        }
+        return minPrice;
     }
 
     /**
@@ -169,38 +172,39 @@ public class MDS {
      * @return Money Highest price if there is such item, else return 0
      */
     public Money findMaxPrice(long n) {
-    	if(!table.containsKey(n)) {
-    		return new Money();
-    	}
-    	TreeSet<Long> maxSet = table.get(n);
-    	Money maxPrice = new Money();
-    	boolean first = false;
-    	for(Long id: maxSet) {
-    		Money tempPrice = (Money) tree.get(id).get(0);
-    		if (maxPrice.compareTo(tempPrice) == -1 || !first) {
-    			maxPrice = tempPrice;
-    			first = true;
-    		}
-    	}
-    	return maxPrice;
+        if(!table.containsKey(n)) {
+            return new Money();
+        }
+        TreeSet<Long> maxSet = table.get(n);
+        Money maxPrice = new Money();
+        boolean first = false;
+        for(Long id: maxSet) {
+            Money tempPrice = (Money) tree.get(id).price;
+            if (maxPrice.compareTo(tempPrice) == -1 || !first) {
+                maxPrice = tempPrice;
+                first = true;
+            }
+        }
+        return maxPrice;
     }
 
-    /* 
+
+    /*
        f. FindPriceRange(n,low,high): given a long int n, find the number
        of items whose description contains n, and in addition,
        their prices fall within the given range, [low, high].
     */
     public int findPriceRange(long n, Money low, Money high) {
-	return 0;
+        return 0;
     }
 
-    /* 
+    /*
        g. PriceHike(l,h,r): increase the price of every product, whose id is
        in the range [l,h] by r%.  Discard any fractional pennies in the new
        prices of items.  Returns the sum of the net increases of the prices.
     */
     public Money priceHike(long l, long h, double rate) {
-	return new Money();
+        return new Money();
     }
 
     /*
@@ -209,6 +213,8 @@ public class MDS {
       id's description.  Return the sum of the numbers that are actually
       deleted from the description of id.  Return 0 if there is no such id.
     */
+
+
     public long removeNames(long id, java.util.List<Long> list) {
 	   long result =0;
        if (tree.containsKey(id)){
@@ -223,77 +229,54 @@ public class MDS {
         }
        }
        return result;
+
     }
-    
-    // Do not modify the Money class in a way that breaks LP3Driver.java
-    public static class Money implements Comparable<Money> { 
-		long d;  
-		int c;
-		public Money() { 
-			d = 0; 
-			c = 0; 
-		}
-		public Money(long d, int c) { 
-			this.d = d; 
-			this.c = c; 
-		}
-		public Money(String s) {
-		    String[] part = s.split("\\.");
-		    int len = part.length;
-		    if(len < 1) { 
-		    	d = 0; 
-		    	c = 0; 
-		    }
-		    else if(part.length == 1) { 
-		    	d = Long.parseLong(s);  
-		    	c = 0; 
-		    }
-		    else { 
-			    d = Long.parseLong(part[0]);  
-			    c = Integer.parseInt(part[1]); 
-		    }
-		}
-		public long dollars() { 
-			return d; 
-		}
-		public int cents() { 
-			return c; 
-		}
-		public int compareTo(Money other) { // Complete this, if needed
-			if (this.d > other.d)
-				return 1;
-			else if (this.d < other.d)
-				return -1;
-			else if (this.c > other.c)
-				return 1;
-			else if (this.c < other.c)
-				return -1;
-		    return 0;
-		}
-		public String toString() { 
-			return d + "." + c; 
-		}
+
+    public static class Money implements Comparable<Money> {
+        long d;  int c;
+        public Money() { d = 0; c = 0; }
+        public Money(long d, int c) { this.d = d; this.c = c; }
+        public Money(String s) {
+            String[] part = s.split("\\.");
+            int len = part.length;
+            if(len < 1) { d = 0; c = 0; }
+            else if(part.length == 1) { d = Long.parseLong(s);  c = 0; }
+            else { d = Long.parseLong(part[0]);  c = Integer.parseInt(part[1]); }
+        }
+        public long dollars() { return d; }
+        public int cents() { return c; }
+        public int compareTo(Money other) { // Complete this, if needed
+            if (this.d > other.d)
+                return 1;
+            else if (this.d < other.d)
+                return -1;
+            else if (this.c > other.c)
+                return 1;
+            else if (this.c < other.c)
+                return -1;
+            return 0;
+        }
+        public String toString() { return d + "." + c; }
     }
 
     public void printTable(){
-        System.out.println("Hash Table: " + table);
-        /*Set<Long> keys = table.keySet();
+        Set<Long> keys = table.keySet();
         for(Long k: keys){
             System.out.print(k + ": ");
             for(Object v: table.get(k))
                 System.out.print(v.toString() + " ");
             System.out.println();
-        }*/
+        }
+        System.out.println();
     }
 
     public void printTree(){
-        System.out.println("TreeMap: " + tree);
-        /*Set<Long> keys = tree.keySet();
-
+        Set<Long> keys = tree.keySet();
         for(Long k: keys){
             System.out.print(k + ": ");
-            System.out.print(tree.get(k).toString() + " ");
+            System.out.print(tree.get(k).price.toString() + " ");
+            System.out.print(tree.get(k).desc.toString() + " ");
             System.out.println();
-        }*/
+        }
     }
 }

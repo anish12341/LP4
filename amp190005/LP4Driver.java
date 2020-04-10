@@ -6,22 +6,22 @@
 package LP4.amp190005;
 
 import java.io.File;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LP4Driver {
     public static void main(String[] args) throws Exception {
         Scanner in;
-        File file = new File("G:\\Study\\Data Structures\\src\\LP4\\amp190005\\407.txt");
-        in = new Scanner(file);
-//        if (args.length > 0 && !args[0].equals("-")) {
-//            File file = new File(args[0]);
-//            in = new Scanner(file);
-//        } else {
-//            in = new Scanner(System.in);
-//        }
-	boolean VERBOSE = false;
+        /*if (args.length > 0 && !args[0].equals("-")) {
+            File file = new File(args[0]);
+            in = new Scanner(file);
+        } else {
+            in = new Scanner(System.in);
+        }*/
+		File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\403.txt");
+		in = new Scanner(file);
+		boolean VERBOSE = false;
 	if (args.length > 1) { VERBOSE = Boolean.parseBoolean(args[1]); }
 
         String operation = "";
@@ -45,24 +45,29 @@ public class LP4Driver {
 	    switch (operation) {
 	    case "End":
 		break whileloop;
-	    case "Insert":
-		id = in.nextLong();
-		price = new MDS.Money(in.next());
-		name.clear();
-		while(true) {
-		    long val = in.nextLong();
-		    if(val == 0) { break; }
-		    else { name.add(val); }
-		}
-		result = mds.insert(id, price, name);
+
+		case "Insert":
+			id = in.nextLong();
+			price = new MDS.Money(in.next());
+			name.clear();
+			while(true) {
+				long val = in.nextLong();
+				if(val == 0) { break; }
+				else { name.add(val); }
+			}
+			result = mds.insert(id, price, name);
+			System.out.println("Insert: " + result);
+
 		break;
 	    case "Find":
 		id = in.nextLong();
 		result = mds.find(id).dollars();
+			System.out.println("FInd: " + result);
 		break;
 	    case "Delete":
 		id = in.nextLong();
 		result = mds.delete(id);
+			System.out.println("Delete: " + result);
 		break;
 	    case "FindMinPrice":
 		result = mds.findMinPrice(in.nextLong()).dollars();
@@ -88,10 +93,16 @@ public class LP4Driver {
 		break;
 	    default:
 		System.out.println("Unknown operation: " + operation);
+
+			case "Print":
+				mds.printTree();
+				mds.printTable();
 	    }
 	    total += result;
+	    System.out.println("Total: " + total);
 	    if(VERBOSE) { System.out.println(lineno + "\t" + operation + "\t" + result + "\t" + total); }
 	}
+
 	System.out.println(total);
 	System.out.println(timer.end());
     }
