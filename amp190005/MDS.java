@@ -224,7 +224,11 @@ public class MDS {
             if (value.contains(i)){
                 result += i;
                 this.tree.get(id).desc.remove(i);        
-                this.table.get(i).remove(id);       
+                this.table.get(i).remove(id);
+                // if (table.get(i).size()==0){
+                //     table.remove(i);
+                // }
+
             }
         }
        }
