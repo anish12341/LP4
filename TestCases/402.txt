@@ -1,14 +1,20 @@
 Insert 22 19.97 475 1238 9742 0
+Print
 Find 22
 Insert 22 29.97 0
+Print
 Find 22
 Insert 12 96.92 44 109 0
+Print
 Insert 37 47.44 109 475 694 88 0
+Print
 FindMinPrice 475
 Insert 22 29.97 998 997 996 995 0
+Print
 Find 22
 FindMinPrice 475
 Delete 22
+Print
 Find 22
 End
 
