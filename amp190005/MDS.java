@@ -213,9 +213,23 @@ public class MDS {
       id's description.  Return the sum of the numbers that are actually
       deleted from the description of id.  Return 0 if there is no such id.
     */
-    public long removeNames(long id, List<Long> list) {
 
-        return 0;
+
+    public long removeNames(long id, java.util.List<Long> list) {
+	   long result =0;
+       if (tree.containsKey(id)){
+        List value = new ArrayList();
+        value=tree.get(id);
+        for( long i: list){
+            if (value.contains(i)){
+                result += i;
+                this.tree.get(id).remove(i);
+                this.table.get(i).remove(id);
+            }
+        }
+       }
+       return result;
+
     }
 
     public static class Money implements Comparable<Money> {
