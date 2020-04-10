@@ -219,12 +219,12 @@ public class MDS {
 	   long result =0;
        if (tree.containsKey(id)){
         List value = new ArrayList();
-        value=tree.get(id);
+        value=tree.get(id).desc;                         
         for( long i: list){
             if (value.contains(i)){
                 result += i;
-                this.tree.get(id).remove(i);
-                this.table.get(i).remove(id);
+                this.tree.get(id).desc.remove(i);        
+                this.table.get(i).remove(id);       
             }
         }
        }
