@@ -20,6 +20,7 @@ public class MDS {
     TreeMap<Long, MDSEntry> tree;
     HashMap<Long, TreeSet<Long>> table;
     TreeSet<Long> set;
+    double totalIncrease = 0.0;
 
     /**
      * Class MDSEntry
@@ -73,6 +74,7 @@ public class MDS {
         else{
             List ls  = new ArrayList();
             ls.addAll(list);
+            System.out.println("My list");
             tree.put(id,new MDSEntry(price,ls));
 
             // add keys to the table and initialize empty set for them
@@ -99,7 +101,6 @@ public class MDS {
                 }
             }
         }
-
         return 1;
     }
 
@@ -185,6 +186,7 @@ public class MDS {
                 first = true;
             }
         }
+        System.out.println("Returning: " + maxPrice);
         return maxPrice;
     }
 
@@ -195,7 +197,20 @@ public class MDS {
        their prices fall within the given range, [low, high].
     */
     public int findPriceRange(long n, Money low, Money high) {
-        return 0;
+        System.out.println("Arguments: " + n + " " + low + " " + high);
+        int count = 0;
+        if (table.containsKey(n)) {
+            TreeSet<Long> maxSet = table.get(n);
+            for(Long id: maxSet) {
+                Money tempPrice = (Money) tree.get(id).price;
+                if ((tempPrice.compareTo(low) == 1 && tempPrice.compareTo(high) == -1) || tempPrice.compareTo(low) == 0 || tempPrice.compareTo(high) == 0) {
+                    System.out.println("My ID: " + id + " " + tempPrice.toString());
+                    count++;
+                }
+            }
+        }
+        System.out.println("Find price range: " + count);
+        return count;
     }
 
     /*
@@ -204,7 +219,40 @@ public class MDS {
        prices of items.  Returns the sum of the net increases of the prices.
     */
     public Money priceHike(long l, long h, double rate) {
-        return new Money();
+        // System.out.println("InPriceHike------------------------");
+        for (long key : tree.keySet()) {
+            if (key >= l && key <= h) {
+                MDSEntry obj = tree.get(key);
+                // System.out.println("Current ID: " + key);
+                Money newPrice = increasePrice(obj.price, rate);
+                // System.out.println("New price before: " + newPrice.toString());
+                obj.price = newPrice;
+                // System.out.println("New price after: " + obj.price.toString());
+            }
+        }
+        // System.out.println("Final increase: " + totalIncrease);
+        Money finalRes = new Money(String.format("%.5f", totalIncrease));
+        totalIncrease = 0.0;
+        return finalRes;
+    }
+
+    public Money increasePrice(Money price, double rate) {
+        // System.out.println("Current dollars: " + price.dollars());
+        // System.out.println("Current cents: " + price.cents());
+
+        double total = price.dollars() + (price.cents()*0.01);
+        // System.out.println("Current total: " + total);
+        double currentIncrease = total * (rate/100);
+        // currentIncrease.
+        currentIncrease = Double.parseDouble(String.format("%.3f", currentIncrease));
+        // System.out.println("Current Increase: " + currentIncrease);
+
+        totalIncrease += currentIncrease;
+        total += currentIncrease;
+        // System.out.println("Current total after: " + total);
+        String fullStr = Double.toString(total);
+        int dotInd = fullStr.indexOf(".");
+        return new Money(fullStr.substring(0, Math.min(dotInd+3, fullStr.length())));
     }
 
     /*
@@ -239,6 +287,8 @@ public class MDS {
         public Money(String s) {
             String[] part = s.split("\\.");
             int len = part.length;
+            // System.out.println("String: " + s);
+            // System.out.println("Parts: " + part[0] + " " + part[1]);
             if(len < 1) { d = 0; c = 0; }
             else if(part.length == 1) { d = Long.parseLong(s);  c = 0; }
             else { d = Long.parseLong(part[0]);  c = Integer.parseInt(part[1]); }
