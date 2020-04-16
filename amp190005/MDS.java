@@ -219,40 +219,23 @@ public class MDS {
        prices of items.  Returns the sum of the net increases of the prices.
     */
     public Money priceHike(long l, long h, double rate) {
-        // System.out.println("InPriceHike------------------------");
         for (long key : tree.keySet()) {
             if (key >= l && key <= h) {
                 MDSEntry obj = tree.get(key);
-                // System.out.println("Current ID: " + key);
                 Money newPrice = increasePrice(obj.price, rate);
-                // System.out.println("New price before: " + newPrice.toString());
                 obj.price = newPrice;
-                // System.out.println("New price after: " + obj.price.toString());
             }
         }
-        // System.out.println("Final increase: " + totalIncrease);
-        Money finalRes = new Money(String.format("%.5f", totalIncrease));
+        Money finalRes = new Money((long)(totalIncrease/100.0), (int) (totalIncrease%100));
         totalIncrease = 0.0;
         return finalRes;
     }
 
     public Money increasePrice(Money price, double rate) {
-        // System.out.println("Current dollars: " + price.dollars());
-        // System.out.println("Current cents: " + price.cents());
-
-        double total = price.dollars() + (price.cents()*0.01);
-        // System.out.println("Current total: " + total);
-        double currentIncrease = total * (rate/100);
-        // currentIncrease.
-        currentIncrease = Double.parseDouble(String.format("%.3f", currentIncrease));
-        // System.out.println("Current Increase: " + currentIncrease);
-
-        totalIncrease += currentIncrease;
-        total += currentIncrease;
-        // System.out.println("Current total after: " + total);
-        String fullStr = Double.toString(total);
-        int dotInd = fullStr.indexOf(".");
-        return new Money(fullStr.substring(0, Math.min(dotInd+3, fullStr.length())));
+        long priceNew = price.dollars() * 100 + price.cents();
+        long updatedPrice = priceNew + (long)(priceNew * rate / 100.0);
+        totalIncrease += (updatedPrice - priceNew);
+        return new Money(updatedPrice / 100, (int)(updatedPrice % 100));
     }
 
     /*
