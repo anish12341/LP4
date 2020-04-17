@@ -3,11 +3,11 @@
  */
 
 // Change to your net id
-package LP4.amp190005;
+package LP4.amp190006;
 
 import java.io.File;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class LP4Driver {
@@ -18,16 +18,8 @@ public class LP4Driver {
             in = new Scanner(file);
         } else {
             in = new Scanner(System.in);
-<<<<<<< HEAD
-        }*/
-		File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\402.txt");
-		in = new Scanner(file);
-=======
         }
-		// File file = new File("C:\\Users\\Ishan\\IdeaProjects\\Implementation of DS and Algo\\LP4Git\\src\\LP4\\TestCases\\403.txt");
-		// in = new Scanner(file);
->>>>>>> Development
-		boolean VERBOSE = false;
+	boolean VERBOSE = false;
 	if (args.length > 1) { VERBOSE = Boolean.parseBoolean(args[1]); }
 
         String operation = "";
@@ -51,29 +43,24 @@ public class LP4Driver {
 	    switch (operation) {
 	    case "End":
 		break whileloop;
-
-		case "Insert":
-			id = in.nextLong();
-			price = new MDS.Money(in.next());
-			name.clear();
-			while(true) {
-				long val = in.nextLong();
-				if(val == 0) { break; }
-				else { name.add(val); }
-			}
-			result = mds.insert(id, price, name);
-			System.out.println("Insert: " + result);
-
+	    case "Insert":
+		id = in.nextLong();
+		price = new MDS.Money(in.next());
+		name.clear();
+		while(true) {
+		    long val = in.nextLong();
+		    if(val == 0) { break; }
+		    else { name.add(val); }
+		}
+		result = mds.insert(id, price, name);
 		break;
 	    case "Find":
 		id = in.nextLong();
 		result = mds.find(id).dollars();
-			System.out.println("FInd: " + result);
 		break;
 	    case "Delete":
 		id = in.nextLong();
 		result = mds.delete(id);
-			System.out.println("Delete: " + result);
 		break;
 	    case "FindMinPrice":
 		result = mds.findMinPrice(in.nextLong()).dollars();
@@ -99,15 +86,10 @@ public class LP4Driver {
 		break;
 	    default:
 		System.out.println("Unknown operation: " + operation);
-
-			case "Print":
-				mds.printTree();
-				mds.printTable();
 	    }
 	    total += result;
 	    if(VERBOSE) { System.out.println(lineno + "\t" + operation + "\t" + result + "\t" + total); }
 	}
-
 	System.out.println(total);
 	System.out.println(timer.end());
     }
