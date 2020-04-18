@@ -242,9 +242,11 @@ public class MDS {
 
     }
 
+    // Do not modify the Money class in a way that breaks LP4Driver.java
     public static class Money implements Comparable<Money> {
         long d;
         int c;
+
         public Money() {
             d = 0;
             c = 0;
@@ -258,15 +260,18 @@ public class MDS {
         public Money(String s) {
             String[] part = s.split("\\.");
             int len = part.length;
-            if(len < 1) {
+            if (len < 1) {
                 d = 0;
                 c = 0;
-            } else if(len == 1) {
+            } else if (len == 1) {
                 d = Long.parseLong(s);
                 c = 0;
             } else {
                 d = Long.parseLong(part[0]);
                 c = Integer.parseInt(part[1]);
+                if (part[1].length() == 1) {
+                    c = c * 10;
+                }
             }
         }
 
@@ -289,10 +294,10 @@ public class MDS {
                 return -1;
             return 0;
         }
+
         public String toString() {
             return d + "." + c;
         }
-
     }
 
     public void printTable(){

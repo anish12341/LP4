@@ -55,9 +55,6 @@ Find 68
 Find 499
 Find 499
 Delete 499
-Print
 End
 
 Output: 11132
-
-
